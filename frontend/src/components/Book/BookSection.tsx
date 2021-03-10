@@ -45,9 +45,32 @@ const BookSection: React.FC<BookSectionProps> = ({ book }) => {
 
       {/* content */}
       <article className="relative w-2/3 h-full pl-12">
-        <p className="text-sm font-bold tracking-wide text-red-600 uppercase">
-          Book #{id}
-        </p>
+        {/* edit and delete buttons */}
+        <section className="flex items-center justify-between">
+          <p className="text-sm font-bold tracking-wide text-red-600 uppercase">
+            Book #{id}
+          </p>
+
+          <div className="flex items-center justify-center space-x-3">
+            <button
+              className="flex items-center justify-center px-3 py-1 font-medium text-white bg-blue-600 rounded-md hover:bg-blue-500"
+              onClick={() => push(`/books/edit/${id}`)}
+            >
+              <span>Edit Book</span>
+
+              <AiFillEdit className="w-4 h-4 mt-1 ml-1" />
+            </button>
+
+            <button
+              className="flex items-center justify-center px-3 py-1 font-medium text-white bg-red-600 rounded-md hover:bg-red-500"
+              onClick={() => deleteBook(id)}
+            >
+              <span>Delete Book</span>
+
+              <AiFillDelete className="w-4 h-4 mt-1 ml-1" />
+            </button>
+          </div>
+        </section>
 
         {/* book title */}
         <h2 className="mt-5 text-4xl font-bold leading-tight text-gray-900">
@@ -79,32 +102,19 @@ const BookSection: React.FC<BookSectionProps> = ({ book }) => {
           <span className="ml-2">{review.length} reviews</span>
         </div>
 
-        {/* edit and delete buttons */}
-        <section className="flex items-center space-x-3">
-          <button
-            className="flex items-center justify-center px-3 py-1 mt-8 font-medium text-white bg-blue-600 rounded-md hover:bg-blue-500"
-            onClick={() => push(`/books/edit/${id}`)}
-          >
-            <span>Edit Book</span>
-
-            <AiFillEdit className="w-4 h-4 mt-1 ml-1" />
-          </button>
-
-          <button
-            className="flex items-center justify-center px-3 py-1 mt-8 font-medium text-white bg-red-600 rounded-md hover:bg-red-500"
-            onClick={() => deleteBook(id)}
-          >
-            <span>Delete Book</span>
-
-            <AiFillDelete className="w-4 h-4 mt-1 ml-1" />
-          </button>
-        </section>
+        <hr className="px-20 my-6" />
 
         {/* ReviewForm comp */}
         <ReviewForm />
 
+        <hr className="px-20 my-6" />
+
         {/* BookReviews comp */}
-        <BookReviews />
+        <main className="relative flex items-center antialiased min-w-screen">
+          <div className="container px-0">
+            <BookReviews />
+          </div>
+        </main>
       </article>
     </main>
   )
