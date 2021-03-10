@@ -1,0 +1,32 @@
+datasource db {
+  provider = "sqlserver"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["microsoftSqlServer"]
+}
+
+model Book {
+  id          Int      @id @default(autoincrement())
+  title       String
+  author      String
+  synopsis    String
+  releaseYear Int
+  coverURL    String
+  review      Review[] @relation("FK_book") // 1-m, NOTE: seharusnya namanya reviews
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Review {
+  id           Int      @id @default(autoincrement())
+  bookId       Int
+  book         Book     @relation("FK_book", fields: [bookId], references: [id]) // 1-1
+  reviewerName String
+  rating       Int
+  comment      String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}

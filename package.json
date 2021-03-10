@@ -1,0 +1,18 @@
+{
+  "name": "menjadi-azure-cloud-dev-sub-1",
+  "version": "1.0.0",
+  "description": "Dicoding - Menjadi Azure Cloud Dev - Submission 1",
+  "main": "",
+  "scripts": {
+    "frontend-dev": "npm run dev --prefix frontend",
+    "backend-dev": "npm run dev --prefix backend",
+    "dev": "concurrently \"npm run backend-dev\" \"npm run frontend-dev\"",
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix frontend && npm run build --prefix frontend"
+  },
+  "keywords": [],
+  "author": "Rifandani",
+  "license": "ISC",
+  "dependencies": {
+    "concurrently": "^6.0.0"
+  }
+}
