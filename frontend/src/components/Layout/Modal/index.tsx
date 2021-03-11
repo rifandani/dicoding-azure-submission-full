@@ -60,13 +60,13 @@ const Modal: React.FC<{ book: any }> = ({ book }) => {
       }
 
       // kalau POST /upload success
-      // const res2 = await axios.post('/books', {
-      //   ...state,
-      //   coverURL: res?.data.coverURL
-      // })
+      const res2 = await axios.post('/books', {
+        ...editedBook,
+        coverURL: res?.data.coverURL,
+      })
 
       // kalau server response tidak success
-      if (!res?.data.success) {
+      if (!res2?.data.success) {
         setTitle('')
         setAuthor('')
         setReleaseYear('')
@@ -76,8 +76,8 @@ const Modal: React.FC<{ book: any }> = ({ book }) => {
       }
 
       // kalau POST /books success
-      // toast.success('Book updated')
-      // mutate(`/books/${book.id}`, res?.data.book) // res.data.book === object book hasil response dari server
+      toast.success('Book updated')
+      mutate(`/books/${book.id}`, res?.data.book) // res.data.book === object book hasil response dari server
     } catch (err) {
       console.error(err)
       toast.error('Server error! Try again later')

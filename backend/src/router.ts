@@ -23,7 +23,11 @@ import { postBookCover, putBookCover } from './controllers/BookCoverController';
 
 // express router + multer
 const router = express.Router();
-const upload = multer();
+const upload = multer({
+  limits: {
+    fileSize: 3000000,
+  },
+});
 
 // middlewares
 router.use(helmet()); // security
