@@ -36,6 +36,7 @@
     "react-icons": "^4.2.0",
     "react-paginate": "^7.1.0",
     "react-toastify": "^7.0.3",
+    "reactjs-popup": "^2.0.4",
     "swr": "^0.4.1",
     "tailwindcss": "^2.0.2"
   },

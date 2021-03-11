@@ -1,16 +1,17 @@
 // import { FaRegThumbsUp, FaThumbsUp } from 'react-icons/fi'
 
-const BookReviews: React.FC = () => {
+const BookReviews: React.FC<{ reviewDetail: any }> = ({ reviewDetail }) => {
   return (
-    <div className="flex-col w-full py-4 bg-white border-b-2 border-r-2 border-gray-200 shadow-md sm:px-4 sm:py-4 sm:rounded-lg sm:shadow-sm md:w-2/3">
+    <div className="flex-col w-full py-4 mb-2 bg-white border-b-2 border-r-2 border-gray-200 shadow-md sm:px-4 sm:py-4 sm:rounded-lg sm:shadow-sm md:w-2/3">
       <div className="flex flex-row">
         <div className="flex-col mt-1">
           {/* name */}
           <div className="flex items-center flex-1 px-4 font-bold leading-tight">
-            Noob master
+            {reviewDetail.reviewerName || 'Anonymous'}
+
             {/* updated at */}
             <span className="ml-2 text-xs font-normal text-gray-500">
-              2 weeks ago
+              {new Date(reviewDetail.updatedAt).toLocaleString()}
             </span>
           </div>
 
@@ -22,7 +23,9 @@ const BookReviews: React.FC = () => {
                 <svg
                   key={i}
                   className={`${
-                    4 >= i + 1 ? 'text-blue-500' : 'text-gray-400'
+                    reviewDetail.rating >= i + 1
+                      ? 'text-blue-500'
+                      : 'text-gray-400'
                   } h-4 w-4 fill-current`}
                   viewBox="0 0 24 24"
                   xmlns="http://www.w3.org/2000/svg"
@@ -34,7 +37,7 @@ const BookReviews: React.FC = () => {
 
           {/* comment */}
           <div className="flex-1 px-2 mt-3 ml-2 text-sm font-medium leading-loose text-gray-600">
-            Wow!!! how you did you create this?
+            {reviewDetail.comment}
           </div>
 
           {/* like button */}

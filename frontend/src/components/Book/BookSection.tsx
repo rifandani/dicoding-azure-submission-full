@@ -1,17 +1,16 @@
 import React from 'react'
-import { useRouter } from 'next/dist/client/router'
-import { AiFillEdit, AiFillDelete } from 'react-icons/ai'
+import { AiFillDelete } from 'react-icons/ai'
 
 import { deleteBook } from '../Home/BookCard'
 import ReviewForm from './ReviewForm'
 import BookReviews from './BookReviews'
+import Modal from '../Layout/Modal'
 
 export interface BookSectionProps {
   book: any
 }
 
 const BookSection: React.FC<BookSectionProps> = ({ book }) => {
-  const { push } = useRouter()
   const { author, coverURL, releaseYear, synopsis, title, id, review } = book
 
   // review rating algorithm
@@ -52,15 +51,10 @@ const BookSection: React.FC<BookSectionProps> = ({ book }) => {
           </p>
 
           <div className="flex items-center justify-center space-x-3">
-            <button
-              className="flex items-center justify-center px-3 py-1 font-medium text-white bg-blue-600 rounded-md hover:bg-blue-500"
-              onClick={() => push(`/books/edit/${id}`)}
-            >
-              <span>Edit Book</span>
+            {/* edit button */}
+            <Modal book={book} />
 
-              <AiFillEdit className="w-4 h-4 mt-1 ml-1" />
-            </button>
-
+            {/* delete button */}
             <button
               className="flex items-center justify-center px-3 py-1 font-medium text-white bg-red-600 rounded-md hover:bg-red-500"
               onClick={() => deleteBook(id)}
@@ -105,14 +99,18 @@ const BookSection: React.FC<BookSectionProps> = ({ book }) => {
         <hr className="px-20 my-6" />
 
         {/* ReviewForm comp */}
-        <ReviewForm />
+        <ReviewForm bookId={id} />
 
         <hr className="px-20 my-6" />
 
         {/* BookReviews comp */}
         <main className="relative flex items-center antialiased min-w-screen">
           <div className="container px-0">
-            <BookReviews />
+            {review.length > 0
+              ? review.map((reviewDetail: any, i: number) => (
+                  <BookReviews key={i} reviewDetail={reviewDetail} />
+                ))
+              : null}
           </div>
         </main>
       </article>

@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import morgan from 'morgan';
 import helmet from 'helmet';
+import multer from 'multer';
 // files
 import { getHome } from './controllers/HomeController';
 import {
@@ -18,17 +19,22 @@ import {
   putReview,
   deleteReview,
 } from './controllers/ReviewController';
+import { postBookCover, putBookCover } from './controllers/BookCoverController';
 
-// express router
+// express router + multer
 const router = express.Router();
+const upload = multer();
 
 // middlewares
 router.use(helmet()); // security
 router.use(morgan('dev')); // dev logging API
 router.use(cors()); // allow CORS
-router.use(express.json()); // request application/type === json
-router.use(express.urlencoded({ extended: false })); // form data object, value objectnya berasal dari input attribute name
 // router.use(compression()); // Gzip compressing can greatly decrease the size of the response body
+
+// ALL for POST/PUT requests
+router.use(express.json()); // parsing application/json req as a JSON Object
+// value objectnya berasal dari input attribute name
+// router.use(express.urlencoded({ extended: false })); // parsing application/www-form-urlencoded as strings or arrays (false) + object (true)
 
 // HOME routes
 router.get('/', getHome);
@@ -38,11 +44,14 @@ router.get('/books/:id', getBook);
 router.post('/books', postBook);
 router.put('/books/:id', putBook);
 router.delete('/books/:id', deleteBook);
-// BOOKS routes
+// REVIEWS routes
 router.get('/reviews', getReviews);
 router.get('/reviews/:id', getReview);
 router.post('/reviews', postReview);
 router.put('/reviews/:id', putReview);
 router.delete('/reviews/:id', deleteReview);
+// UPLOAD routes
+router.post('/upload', upload.single('image_uploads'), postBookCover);
+router.put('/upload/:coverURL', upload.single('image_uploads'), putBookCover);
 
 export default router;

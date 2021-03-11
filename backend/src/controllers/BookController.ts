@@ -74,7 +74,7 @@ export const postBook = async (
       },
     });
 
-    res.status(200);
+    res.status(201);
     res.json({ success: true, book });
   } catch (err) {
     res.status(500);
@@ -106,7 +106,7 @@ export const putBook = async (
       },
     });
 
-    res.status(200);
+    res.status(201);
     res.json({ success: true, book });
   } catch (err) {
     res.status(500);

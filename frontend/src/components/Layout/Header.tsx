@@ -25,9 +25,9 @@ const Header: React.FC = () => {
           </div>
 
           <div className="flex items-center justify-end w-full">
-            <button className="mx-4 text-gray-600 focus:outline-none sm:mx-0">
+            <span className="mx-4 text-gray-600 focus:outline-none sm:mx-0">
               <SiMicrosoftazure className="w-5 h-5 hover:text-blue-600" />
-            </button>
+            </span>
 
             <div className="flex sm:hidden">
               <button

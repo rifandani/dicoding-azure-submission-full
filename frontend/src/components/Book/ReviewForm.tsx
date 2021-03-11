@@ -1,6 +1,42 @@
-const ReviewForm: React.FC = () => {
-  const onSubmitReview = () => {
-    alert('submit')
+import axios from 'axios'
+import { FormEvent, useState } from 'react'
+import { toast } from 'react-toastify'
+import { mutate } from 'swr'
+
+const ReviewForm: React.FC<{ bookId: number }> = ({ bookId }) => {
+  const [reviewerName, setReviewerName] = useState<string>('')
+  const [rating, setRating] = useState<string>('1')
+  const [comment, setComment] = useState<string>('')
+
+  const onSubmitReview = async (e: FormEvent) => {
+    e.preventDefault()
+
+    if (!reviewerName || !rating || !comment)
+      return alert('Do not empty input field')
+
+    const review = {
+      bookId,
+      reviewerName,
+      rating: parseInt(rating),
+      comment,
+    }
+
+    try {
+      const res = await axios.post('reviews', review)
+
+      // kalau res server tidak success
+      if (!res?.data.success) {
+        setReviewerName('')
+        setComment('')
+        return toast.error(res?.data.msg)
+      }
+
+      toast.success('Review added')
+      mutate(`/books/${bookId}`, res?.data.book) // res.data.book === object value dari book itu sendiri
+    } catch (err) {
+      console.error(err)
+      toast.error('Server error')
+    }
   }
 
   return (
@@ -43,6 +79,8 @@ const ReviewForm: React.FC = () => {
                         className="block w-full px-3 py-2 mt-1 transition duration-150 ease-in-out border border-gray-300 rounded-md shadow-sm form-input focus:outline-none focus:shadow-outline-blue focus:border-blue-300 sm:text-sm sm:leading-5"
                         required
                         minLength={3}
+                        value={reviewerName}
+                        onChange={(e) => setReviewerName(e.target.value)}
                       />
                     </div>
 
@@ -59,12 +97,14 @@ const ReviewForm: React.FC = () => {
                         className="block w-full px-3 py-2 mt-1 transition duration-150 ease-in-out bg-white border border-gray-300 rounded-md shadow-sm form-select focus:outline-none focus:shadow-outline-blue focus:border-blue-300 sm:text-sm sm:leading-5"
                         id="rating"
                         required
+                        value={rating}
+                        onChange={(e) => setRating(e.target.value)}
                       >
-                        <option>1</option>
-                        <option>2</option>
-                        <option>3</option>
-                        <option>4</option>
-                        <option>5</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
                       </select>
                     </div>
 
@@ -83,6 +123,8 @@ const ReviewForm: React.FC = () => {
                         rows={5}
                         required
                         minLength={10}
+                        value={comment}
+                        onChange={(e) => setComment(e.target.value)}
                       />
                     </div>
                   </div>
@@ -90,7 +132,10 @@ const ReviewForm: React.FC = () => {
 
                 {/* Submit button */}
                 <div className="px-4 py-3 text-right bg-gray-50 sm:px-6">
-                  <button className="px-4 py-1 text-sm font-medium leading-5 text-white transition duration-150 ease-in-out bg-green-600 border border-transparent rounded-md shadow-sm hover:bg-green-500 focus:outline-none focus:shadow-outline-blue active:bg-green-600">
+                  <button
+                    type="submit"
+                    className="px-4 py-1 text-sm font-medium leading-5 text-white transition duration-150 ease-in-out bg-green-600 border border-transparent rounded-md shadow-sm hover:bg-green-500 focus:outline-none focus:shadow-outline-blue active:bg-green-600"
+                  >
                     Submit
                   </button>
                 </div>

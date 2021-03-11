@@ -64,7 +64,7 @@ export const postReview = async (
   try {
     const { bookId, reviewerName, rating, comment } = req.body;
 
-    const review = await prisma.book.update({
+    const book = await prisma.book.update({
       where: {
         id: bookId,
       },
@@ -77,10 +77,13 @@ export const postReview = async (
           },
         },
       },
+      include: {
+        review: true,
+      },
     });
 
-    res.status(200);
-    res.json({ success: true, review });
+    res.status(201);
+    res.json({ success: true, book });
   } catch (err) {
     res.status(500);
     res.json({ success: false, msg: err.message, err });
@@ -109,7 +112,7 @@ export const putReview = async (
       },
     });
 
-    res.status(200);
+    res.status(201);
     res.json({ success: true, review });
   } catch (err) {
     res.status(500);
