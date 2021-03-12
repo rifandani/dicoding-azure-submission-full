@@ -15,10 +15,12 @@ const BookComp: React.FC = () => {
       {/* header */}
       <Header />
 
-      {/* book content */}
-      {data?.success ? <BookSection book={data.book} /> : 'No Data'}
+      {!data && !error ? 'Loading' : null}
 
       {error ? 'Error fetching data' : null}
+
+      {/* book content */}
+      {data?.success ? <BookSection book={data?.book} /> : 'No Data'}
 
       {/* footer */}
       <Footer />

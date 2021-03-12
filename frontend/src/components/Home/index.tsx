@@ -40,7 +40,7 @@ const HomeComp: React.FC = () => {
             </div>
 
             <button
-              onClick={() => push('/books/new')}
+              onClick={() => push('/create/book')}
               className="px-3 my-2 text-white bg-green-600 border rounded-md hover:bg-green-500"
             >
               + New Book

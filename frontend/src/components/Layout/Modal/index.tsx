@@ -31,6 +31,7 @@ const Modal: React.FC<{ book: any }> = ({ book }) => {
     if (!title || !author || !releaseYear || !synopsis || !image) {
       return toast.error('Input all the form fields!')
     } else if (image.size > 2000000) {
+      setImage(null)
       return toast.error('File size cannot exceed more than 2MB!')
     }
 
@@ -41,43 +42,49 @@ const Modal: React.FC<{ book: any }> = ({ book }) => {
       releaseYear: parseInt(releaseYear),
       synopsis,
     }
+    const prevFileName = book.coverURL.split('/')[4]
 
     try {
       // create form-data => enctype: multipart/form-data
       const formData = new FormData()
-      formData.append('image_upload', image)
+      formData.append('image_uploads', image)
 
-      const res = await axios.post('/upload', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      })
+      // PUT req ke /upload
+      const uploadResponse = await axios.put(
+        `/upload?fileName=${prevFileName}`,
+        formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        }
+      )
 
       // kalau server response tidak success
-      if (!res?.data.success) {
+      if (!uploadResponse?.data.success) {
         setImage(null)
-        return toast.error(res?.data.msg)
+        return toast.error(uploadResponse?.data.msg)
       }
 
-      // kalau POST /upload success
-      const res2 = await axios.post('/books', {
+      // PUT /books
+      const booksResponse = await axios.put(`/books/${book.id}`, {
         ...editedBook,
-        coverURL: res?.data.coverURL,
+        coverURL: uploadResponse?.data.coverURL,
       })
 
       // kalau server response tidak success
-      if (!res2?.data.success) {
+      if (!booksResponse?.data.success) {
         setTitle('')
         setAuthor('')
         setReleaseYear('')
         setSynopsis('')
         setImage(null)
-        return toast.error(res?.data.msg)
+        return toast.error(booksResponse?.data.msg)
       }
 
       // kalau POST /books success
       toast.success('Book updated')
-      mutate(`/books/${book.id}`, res?.data.book) // res.data.book === object book hasil response dari server
+      mutate(`/books/${book.id}`, booksResponse?.data.book, true) // res.data.book === object book hasil response dari server
     } catch (err) {
       console.error(err)
       toast.error('Server error! Try again later')
@@ -203,28 +210,28 @@ const Modal: React.FC<{ book: any }> = ({ book }) => {
                     {/* coverURL */}
                     <div className="mt-6">
                       <label
-                        htmlFor="image_upload"
+                        htmlFor="image_uploads"
                         className="block text-sm font-medium leading-5 text-gray-700"
                       >
                         Cover Photo
                       </label>
 
                       <div className="flex items-center mt-2">
-                        <span className="inline-block w-12 h-12 overflow-hidden bg-gray-100 rounded-md">
+                        {/* <span className="inline-block w-12 h-12 overflow-hidden bg-gray-100 rounded-md">
                           <img
                             className="w-full h-full"
                             src={image || '/noPhoto.png'}
                           />
-                        </span>
+                        </span> */}
 
-                        <span className="ml-5 rounded-md shadow-sm">
+                        <span className="rounded-md shadow-sm">
                           <input
                             className="px-3 py-2 text-sm font-medium leading-4 text-gray-700 transition duration-150 ease-in-out border border-gray-300 rounded-md hover:text-gray-500 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-gray-50 active:text-gray-800"
-                            id="image_upload"
+                            id="image_uploads"
                             type="file"
-                            accept="image/*"
+                            accept="image/png, image/jpg, image/jpeg"
                             multiple={false}
-                            value={image}
+                            // value={image}
                             onChange={(e) => {
                               // eslint-disable-next-line no-console
                               console.log(e.target.files)

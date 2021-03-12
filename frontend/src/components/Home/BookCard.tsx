@@ -1,7 +1,6 @@
 import Link from 'next/link'
 import axios from 'axios'
 import React from 'react'
-import { FiTrash2 } from 'react-icons/fi'
 import { mutate } from 'swr'
 
 export interface ProductCardProps {
@@ -31,12 +30,12 @@ const BookCard: React.FC<ProductCardProps> = ({ book }) => {
             backgroundImage: `url(${book.coverURL})`,
           }}
         >
-          <button
+          {/* <button
             onClick={() => deleteBook(book.id)}
             className="p-2 mx-5 -mb-4 text-white bg-red-600 rounded-full hover:bg-red-500 focus:outline-none focus:bg-red-500"
           >
             <FiTrash2 className="w-5 h-5 text-white" />
-          </button>
+          </button> */}
         </div>
 
         {/* details */}

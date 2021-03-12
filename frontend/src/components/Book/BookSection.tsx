@@ -1,5 +1,6 @@
 import React from 'react'
 import { AiFillDelete } from 'react-icons/ai'
+import { useRouter } from 'next/dist/client/router'
 
 import { deleteBook } from '../Home/BookCard'
 import ReviewForm from './ReviewForm'
@@ -12,6 +13,8 @@ export interface BookSectionProps {
 
 const BookSection: React.FC<BookSectionProps> = ({ book }) => {
   const { author, coverURL, releaseYear, synopsis, title, id, review } = book
+
+  const { push } = useRouter()
 
   // review rating algorithm
   const reviewRating =
@@ -57,7 +60,10 @@ const BookSection: React.FC<BookSectionProps> = ({ book }) => {
             {/* delete button */}
             <button
               className="flex items-center justify-center px-3 py-1 font-medium text-white bg-red-600 rounded-md hover:bg-red-500"
-              onClick={() => deleteBook(id)}
+              onClick={async () => {
+                await deleteBook(id)
+                await push('/')
+              }}
             >
               <span>Delete Book</span>
 

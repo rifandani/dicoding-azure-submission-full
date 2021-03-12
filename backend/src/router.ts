@@ -56,6 +56,6 @@ router.put('/reviews/:id', putReview);
 router.delete('/reviews/:id', deleteReview);
 // UPLOAD routes
 router.post('/upload', upload.single('image_uploads'), postBookCover);
-router.put('/upload/:coverURL', upload.single('image_uploads'), putBookCover);
+router.put('/upload', upload.single('image_uploads'), putBookCover);
 
 export default router;

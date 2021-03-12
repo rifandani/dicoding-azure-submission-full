@@ -6,10 +6,10 @@ import {
 import {
   BlobServiceClient,
   StorageSharedKeyCredential,
-  BlobDownloadResponseModel,
 } from '@azure/storage-blob';
+// import { streamToBuffer } from '../utils/streamToBuffer';
 
-import { streamToBuffer } from '../utils/streamToBuffer';
+// DOCS https://docs.microsoft.com/en-us/rest/api/storageservices/put-blob
 
 // POST /books/cover
 export const postBookCover = async (
@@ -51,7 +51,7 @@ export const postBookCover = async (
     // Use AnonymousCredential when url already includes a SAS signature
     // const anonymousCredential = new AnonymousCredential();
 
-    // ------------------- List containers -------------------
+    // ------------------- Masuk ke BlobService & List the containers -------------------
     const blobServiceClient = new BlobServiceClient(
       // When using AnonymousCredential, following url should include a valid SAS or support public access
       `https://${account}.blob.core.windows.net`,
@@ -74,11 +74,9 @@ export const postBookCover = async (
     //   createContainerResponse.requestId
     // );
 
-    // ------------------- Create a blob -------------------
+    // ------------------- Create blob reference -------------------
     const blobName = file.originalname;
     const blockBlobClient = containerClient.getBlockBlobClient(blobName);
-    const uploadBlobResponse = await blockBlobClient.uploadData(file.buffer);
-    console.log(`Upload ${blobName} success: ${uploadBlobResponse.requestId}`);
 
     // ------------------- List blobs -------------------
     for await (const blob of containerClient.listBlobsFlat()) {
@@ -93,6 +91,12 @@ export const postBookCover = async (
         return;
       }
     }
+
+    // ------------------- Add new blob -------------------
+    const uploadBlobResponse = await blockBlobClient.uploadData(file.buffer);
+    console.log(
+      `Upload ${blobName} success with requestId: ${uploadBlobResponse.requestId}`
+    );
 
     // ------------------- Get blob content from position 0 to the end -------------------
     // In Node.js, get downloaded data by accessing downloadBlockBlobResponse.readableStreamBody
@@ -119,7 +123,7 @@ export const postBookCover = async (
   }
 };
 
-// PUT /books/cover
+// PUT /upload?fileName=
 export const putBookCover = async (
   req: Request,
   res: Response
@@ -127,6 +131,10 @@ export const putBookCover = async (
 ): Promise<void> => {
   try {
     const file = req.file; // multipart/form-data file
+    const prevFileName = req.query?.fileName as string; // ?fileName=${image.name}
+
+    console.log(file.originalname);
+    console.log(prevFileName);
 
     // Enter your storage account name and shared key
     const account = process.env.ACCOUNT_NAME || '';
@@ -139,14 +147,14 @@ export const putBookCover = async (
       accountKey
     );
 
-    // ------------------- List containers -------------------
+    // ------------------- Masuk ke BlobService -------------------
     const blobServiceClient = new BlobServiceClient(
       // When using AnonymousCredential, following url should include a valid SAS or support public access
       `https://${account}.blob.core.windows.net`,
       sharedKeyCredential
     );
 
-    // ------------------- Container -------------------
+    // ------------------- get image-uploads-container reference -------------------
     const containerName = 'image-uploads-container';
     const containerClient = blobServiceClient.getContainerClient(containerName);
 
@@ -164,8 +172,25 @@ export const putBookCover = async (
       }
     }
 
+    // ------------------- Delete previous blob file -------------------
+    const prevBlob = containerClient.getBlockBlobClient(prevFileName);
+    const deletedBlobResponse = await prevBlob.delete();
+    console.log(
+      `Deleted ${prevFileName} with requestId: ${deletedBlobResponse.requestId}`
+    );
+
+    // ------------------- create new blob ref & Add it -------------------
+    const newBlob = containerClient.getBlockBlobClient(file.originalname);
+    const newBlobResponse = await newBlob.uploadData(file.buffer);
+    console.log(
+      `Upload ${file.originalname} success with requestId: ${newBlobResponse.requestId}`
+    );
+
     res.status(201);
-    res.json({ success: true, file, coverURL: '' });
+    res.json({
+      success: true,
+      coverURL: `https://${account}.blob.core.windows.net/${containerName}/${file.originalname}`,
+    });
   } catch (err) {
     res.status(500);
     res.json({ success: false, msg: err.message, err });
