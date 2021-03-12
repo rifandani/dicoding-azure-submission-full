@@ -24,7 +24,13 @@ Backend di deploy ke Heroku.
 ## 📷 Screenshots
 
 <p align="center">
-  <a href="https://roompy.vercel.app">
-    <img src="https://i.ibb.co/vHk5H3V/roompy.png" alt="roompy" border="0">
+  <a href="https://rifandani-dicoding.azurewebsites.com">
+    <img src="./ri-library.png" alt="ri-library" border="0">
+  </a>
+</p>
+
+<p align="center">
+  <a href="https://rifandani-dicoding.azurewebsites.com">
+    <img src="./book-detail.png" alt="ri-library book detail" border="0">
   </a>
 </p>
