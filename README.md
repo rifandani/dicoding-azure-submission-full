@@ -13,9 +13,9 @@ Projek ini adalah submission dari Dicoding untuk kelas Menjadi Azure Cloud Devel
 ## 👨🏻‍💻 Tech Stack
 
 Frontend menggunakan Next.js, Typescript, SWR + Axios, dan TailwindCSS.
-Frontend static di deploy ke Azure App Service.
+Frontend static di deploy ke ![Azure Static Web App](https://mango-ocean-0d4421c00.azurestaticapps.net/).
 Backend menggunakan Express.js, Typescript, dan Prisma.
-Backend di deploy ke Heroku.
+Backend di deploy ke Azure App Service.
 
 ![React](https://img.shields.io/badge/React-React-61DAFB?style=for-the-badge&logo=react)
 ![TypeScript](https://img.shields.io/badge/Typescript-Typescript-3178C6?style=for-the-badge&logo=typescript)
