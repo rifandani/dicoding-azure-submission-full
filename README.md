@@ -1,4 +1,4 @@
-# 📃 Project Description
+# 📃 Description
 
 Projek ini adalah submission dari Dicoding untuk kelas Menjadi Azure Cloud Developer. Terdapat 2 submission di dalam kelas ini. Submission 1 dengan kriteria fitur:
 
@@ -13,7 +13,7 @@ Projek ini adalah submission dari Dicoding untuk kelas Menjadi Azure Cloud Devel
 ## 👨🏻‍💻 Tech Stack
 
 Frontend menggunakan Next.js, Typescript, SWR + Axios, dan TailwindCSS.
-Frontend static di deploy ke ![Azure Static Web App](https://mango-ocean-0d4421c00.azurestaticapps.net/).
+Frontend static di deploy ke [Azure Static Web App](https://mango-ocean-0d4421c00.azurestaticapps.net/).
 Backend menggunakan Express.js, Typescript, dan Prisma.
 Backend di deploy ke Azure App Service.
 
