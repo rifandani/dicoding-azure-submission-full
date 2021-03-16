@@ -1,7 +1,7 @@
 import { useRouter } from 'next/dist/client/router'
 import Link from 'next/link'
 import { useState } from 'react'
-import { FiMapPin, FiMenu, FiBook } from 'react-icons/fi'
+import { FiMapPin, FiMenu, FiBook, FiX } from 'react-icons/fi'
 import { SiMicrosoftazure } from 'react-icons/si'
 
 const Header: React.FC = () => {
@@ -18,7 +18,7 @@ const Header: React.FC = () => {
             <span className="mx-1 text-sm">ID</span>
           </div>
 
-          <div className="flex items-center justify-center w-full text-2xl font-semibold text-gray-700 md:text-center">
+          <div className="flex items-center justify-start w-full text-2xl font-semibold text-gray-700 sm:justify-center md:text-center">
             <FiBook className="w-6 mr-1" />
 
             <span className="">Ri-Library</span>
@@ -35,7 +35,11 @@ const Header: React.FC = () => {
                 aria-label="toggle menu"
                 onClick={() => setToggle(!toggle)}
               >
-                <FiMenu className="w-6 h-6 fill-current" />
+                {toggle ? (
+                  <FiX className="w-6 h-6 fill-current" />
+                ) : (
+                  <FiMenu className="w-6 h-6 fill-current" />
+                )}
               </button>
             </div>
           </div>
@@ -58,6 +62,16 @@ const Header: React.FC = () => {
               </a>
             </Link>
 
+            <Link href="/search">
+              <a
+                className={`${
+                  pathname === '/search' ? 'text-red-600' : 'text-gray-600'
+                } mt-3 hover:underline sm:mx-3 sm:mt-0`}
+              >
+                Search
+              </a>
+            </Link>
+
             <Link href="/about">
               <a
                 className={`${
@@ -69,18 +83,6 @@ const Header: React.FC = () => {
             </Link>
           </div>
         </nav>
-
-        {/* search */}
-        {/* <div className="relative max-w-lg mx-auto mt-6">
-          <span className="absolute inset-y-0 left-0 flex items-center pl-3">
-            <FiSearch className="w-5 h-5 text-gray-500" />
-          </span>
-
-          <input
-            className="w-full py-2 pl-10 pr-4 border rounded-md focus:border-red-500 focus:outline-none focus:shadow-outline"
-            placeholder="Search"
-          />
-        </div> */}
       </div>
     </header>
   )

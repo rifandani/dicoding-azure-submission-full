@@ -20,6 +20,7 @@ import {
   deleteReview,
 } from './controllers/ReviewController';
 import { postBookCover, putBookCover } from './controllers/BookCoverController';
+import { postSearch } from './controllers/SearchController';
 
 // express router + multer
 const router = express.Router();
@@ -57,5 +58,7 @@ router.delete('/reviews/:id', deleteReview);
 // UPLOAD routes
 router.post('/upload', upload.single('image_uploads'), postBookCover);
 router.put('/upload', upload.single('image_uploads'), putBookCover);
+// SEARCH routes
+router.post('/search', postSearch);
 
 export default router;

@@ -17,6 +17,7 @@
   "author": "Tri Rizeki Rifandani",
   "license": "MIT",
   "dependencies": {
+    "@azure/search-documents": "^11.1.0",
     "@azure/storage-blob": "^12.5.0",
     "@prisma/client": "^2.18.0",
     "cors": "^2.8.5",
