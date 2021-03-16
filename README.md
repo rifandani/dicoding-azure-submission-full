@@ -1,6 +1,8 @@
 # 📃 Description
 
-Projek ini adalah submission dari Dicoding untuk kelas Menjadi Azure Cloud Developer. Terdapat 2 submission di dalam kelas ini. Submission 1 dengan kriteria fitur:
+Projek ini adalah submission dari Dicoding untuk kelas Menjadi Azure Cloud Developer. Kelas ini memiliki 2 submission yang harus diselesaikan untuk mendapatkan sertifikat.
+
+Submission 1 dengan kriteria fitur:
 
 - Menampilkan daftar buku dari database,
 - Menambahkan data buku ke database dan storage,
@@ -8,7 +10,13 @@ Projek ini adalah submission dari Dicoding untuk kelas Menjadi Azure Cloud Devel
 - Menghapus data buku dari database,
 - Menambahkan review pada buku yang disimpan di database.
 
-> Projek ini diharuskan menggunakan layanan komputasi dan penyimapanan dari Microsoft Azure, seperti Azure SQL Databases, Azure App Service, Azure Blob Storage
+Submission 2 dengan kriteria fitur:
+
+- Fitur pencarian buku,
+- Menerapkan caching,
+- Menyediakan API Gateways bagi pengguna atau developer lain yang ingin mengakses API.
+
+> Submission 1 diharuskan menggunakan layanan komputasi dan penyimapanan dari Microsoft Azure, seperti Azure SQL Databases, Azure App Service, Azure Blob Storage. Sedangkan pada Submission 2 diharuskan menggunakan Azure Cognitive Search, Azure Cache for Redis, dan Azure API Management.
 
 ## 👨🏻‍💻 Tech Stack
 
@@ -24,13 +32,13 @@ Backend di deploy ke Azure App Service.
 ## 📷 Screenshots
 
 <p align="center">
-  <a href="https://rifandani-dicoding.azurewebsites.com">
+  <a href="https://mango-ocean-0d4421c00.azurestaticapps.net/">
     <img src="./ri-library.png" alt="ri-library" border="0">
   </a>
 </p>
 
 <p align="center">
-  <a href="https://rifandani-dicoding.azurewebsites.com">
+  <a href="https://mango-ocean-0d4421c00.azurestaticapps.net/">
     <img src="./book-detail.png" alt="ri-library book detail" border="0">
   </a>
 </p>
