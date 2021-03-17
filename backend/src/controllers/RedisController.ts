@@ -84,7 +84,7 @@ export const postRedis = async (
     console.log('\nCache command: SET book');
     console.log('Cache response : ' + bookOK);
 
-    res.status(200);
+    res.status(201);
     res.json({ success: true, bookOK });
   } catch (err) {
     res.status(500);

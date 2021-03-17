@@ -1,0 +1,732 @@
+swagger: "2.0"
+
+info:
+  description: "This is a Katalog Buku API Documentation using Swagger/OpenAPI. There is no authentication needed for this project. Backend developed using Node.js + Express, Multer, Redis, Prisma 2, Azure Storage Blob, and Azure Search Documents."
+  version: "1.0.0"
+  title: "Swagger Katalog Buku"
+  contact:
+    name: "Tri Rizeki Rifandani"
+    email: "ipandani2505@gmail.com"
+    url: "https://rifandani.netlify.app/contact"
+
+
+host: "katalog-buku-backend2.azurewebsites.net"
+
+basePath: "/api"
+
+tags:
+- name: "books"
+  description: "Access to Book table from Azure SQL"
+  # externalDocs:
+  #   description: "Find out more"
+  #   url: "http://swagger.io"
+- name: "reviews"
+  description: "Access to Review table from Azure SQL"
+- name: "upload"
+  description: "Operations to upload an image to Azure Blob"
+- name: "search"
+  description: "Operations to search from Azure Cognitive Search"
+- name: "redis"
+  description: "Operations for redis from Azure Redis for Cache"
+
+schemes:
+- "https"
+- "http"
+
+# securityDefinitions:
+#   booksstore_auth:
+#     type: "oauth2"
+#     authorizationUrl: "http://booksstore.swagger.io/oauth/dialog"
+#     flow: "implicit"
+#     scopes:
+#       write:bookss: "modify bookss in your account"
+#       read:bookss: "read your bookss"
+#   api_key:
+#     type: "apiKey"
+#     name: "api_key"
+#     in: "header"
+
+paths:
+  /books:
+    get:
+      tags:
+      - "books"
+      summary: "Get books from the store"
+      description: "Returns all books"
+      operationId: "getBooks"
+      produces:
+      - "application/json"
+      responses:
+        "200":
+          description: "Success returns JSON"
+          schema:
+            $ref: '#/definitions/GetBooksSuccessResponse'
+        "500":
+          description: "Prisma error returns JSON"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+    
+    post:
+      tags:
+      - "books"
+      summary: "Add a new book to the store"
+      description: "Add a book with assumption that the coverURL is ready to be consumed"
+      operationId: "postBook"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "BookInput"
+        description: "books object that needs to be added to the store"
+        required: true
+        schema:
+          $ref: '#/definitions/BookInput'
+      responses:
+        "201":
+          description: "Success returns JSON"
+          schema:
+            $ref: '#/definitions/GetPostPutBookSuccessResponse'
+        "500":
+          description: "Prisma error returns JSON"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+    
+  /books/{id}:
+    get:
+      tags:
+      - "books"
+      summary: "Find book by ID"
+      description: "Find a unique book using the id field"
+      operationId: "getBookById"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "ID of books to return"
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        "200":
+          description: "Success returns JSON"
+          schema:
+            $ref: '#/definitions/GetPostPutBookSuccessResponse'
+        "500":
+          description: "Prisma error returns JSON"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+    
+    put:
+      tags:
+      - "books"
+      summary: "Update book by ID"
+      description: "Update a book with assumption that the coverURL is ready to be consumed"
+      operationId: "putBookById"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "ID of books to return"
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        "200":
+          description: "Success returns JSON"
+          schema:
+            $ref: '#/definitions/GetPostPutBookSuccessResponse'
+        "500":
+          description: "Prisma error returns JSON"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+      
+    delete:
+      tags:
+      - "books"
+      summary: "Delete a book"
+      description: "Delete all reviews inside the book, then delete the book itself."
+      operationId: "deleteBook"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "books id to delete"
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        "200":
+          description: "Success returns JSON"
+          schema:
+            $ref: '#/definitions/DeleteBookSuccessResponse'
+        "500":
+          description: "Prisma error returns JSON"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  
+  /reviews:
+    get:
+      tags:
+      - "reviews"
+      summary: "Get reviews from the store"
+      description: "Returns all reviews"
+      operationId: "getReviews"
+      produces:
+      - "application/json"
+      responses:
+        "200":
+          description: "Success returns JSON"
+          schema:
+            $ref: '#/definitions/GetReviewsSuccessResponse'
+        "500":
+          description: "Prisma error returns JSON"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+    
+    post:
+      tags:
+      - "reviews"
+      summary: "Add a new review to the existing book"
+      description: "Add a review based on bookId"
+      operationId: "postReview"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "ReviewInput"
+        description: "review object that needs to be added"
+        required: true
+        schema:
+          $ref: '#/definitions/ReviewInput'
+      responses:
+        "201":
+          description: "Success returns JSON"
+          schema:
+            $ref: '#/definitions/GetPostPutBookSuccessResponse'
+        "500":
+          description: "Prisma error returns JSON"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+    
+  /reviews/{id}:
+    get:
+      tags:
+      - "reviews"
+      summary: "Find review by ID"
+      description: "Find a unique review using the id field"
+      operationId: "getReviewById"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "ID of review to return"
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        "200":
+          description: "Success returns JSON"
+          schema:
+            $ref: '#/definitions/GetPostPutReviewSuccessResponse'
+        "500":
+          description: "Prisma error returns JSON"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+    
+    put:
+      tags:
+      - "reviews"
+      summary: "Update review by ID"
+      description: "Update a review based on bookId"
+      operationId: "putReviewById"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "ID of review to return"
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        "200":
+          description: "Success returns JSON"
+          schema:
+            $ref: '#/definitions/GetPostPutReviewSuccessResponse'
+        "500":
+          description: "Prisma error returns JSON"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+      
+    delete:
+      tags:
+      - "reviews"
+      summary: "Delete a review"
+      description: "Delete a review and not the book related to it"
+      operationId: "deleteReview"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "review id to delete"
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        "200":
+          description: "Success returns JSON"
+          schema:
+            $ref: '#/definitions/DeleteReviewSuccessResponse'
+        "500":
+          description: "Prisma error returns JSON"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  
+  /upload:
+    post:
+      tags:
+      - "upload"
+      summary: "Add new image"
+      description: "Request headers using multipart/form-data dengan key image_uploads"
+      operationId: "postBookCover"
+      consumes:
+      - "multipart/form-data"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "formData"
+        type: "file"
+        name: "UploadInput"
+        description: "form-data object with key image_uploads"
+        required: true
+      responses:
+        "201":
+          description: "Success returns JSON"
+          schema:
+            $ref: '#/definitions/PostPutUploadSuccessResponse'
+        "500":
+          description: "Prisma error returns JSON"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+    
+    put:
+      tags:
+      - "upload"
+      summary: "Update image by query fileName"
+      description: "Delete previous image based on query fileName and Post a new one."
+      operationId: "putBookCover"
+      consumes:
+      - "multipart/form-data"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "fileName"
+        in: "query"
+        description: "image.name of the previous image"
+        required: true
+        type: "string"
+      - in: "formData"
+        type: "file"
+        name: "UploadInput"
+        description: "form-data object with key image_uploads"
+        required: true
+      responses:
+        "201":
+          description: "Success returns JSON"
+          schema:
+            $ref: '#/definitions/PostPutUploadSuccessResponse'
+        "500":
+          description: "Prisma error returns JSON"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+            
+  /search:
+    post:
+      tags:
+      - "search"
+      summary: "Add a new book to the store"
+      description: "Add a book with assumption that the coverURL is ready to be consumed"
+      operationId: "postSearch"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "SearchInput"
+        description: "text string that you want to search"
+        required: true
+        schema:
+          $ref: '#/definitions/SearchInput'
+      responses:
+        "200":
+          description: "Success returns JSON"
+          schema:
+            $ref: '#/definitions/PostSearchSuccessResponse'
+        "500":
+          description: "Search error returns JSON"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+    
+  /redis:
+    get:
+      tags:
+      - "redis"
+      summary: "Get various redis test connection"
+      description: "Returns object from redis"
+      operationId: "getRedis"
+      produces:
+      - "application/json"
+      responses:
+        "200":
+          description: "Success returns JSON"
+          schema:
+            $ref: '#/definitions/GetRedisSuccessResponse'
+        "500":
+          description: "Redis error returns JSON"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+    
+    post:
+      tags:
+      - "redis"
+      summary: "Add a key value to redis cache"
+      description: "Post a key book to the redis cache"
+      operationId: "postRedis"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "RedisInput"
+        description: "book object that you want to store"
+        required: true
+        schema:
+          $ref: '#/definitions/RedisInput'
+      responses:
+        "201":
+          description: "Success returns JSON"
+          schema:
+            $ref: '#/definitions/PostRedisSuccessResponse'
+        "500":
+          description: "Redis error returns JSON"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
+definitions:
+  Book:
+    type: "object"
+    
+    required:
+    - "title"
+    - "author"
+    - "releaseYear"
+    - "synopsis"
+    - "coverURL"
+    
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+      title:
+        type: "string"
+        example: "The Book Thief 2"
+      author:
+        type: "string"
+        example: "Elon Musk"
+      releaseYear:
+        type: "integer"
+        format: "int64"
+        example: 2021
+      synopsis:
+        type: "string"
+        example: "So begins a story of unforgettable perception, beautifully written and illustrated by the gifted and versatile Shel Silverstein."
+      coverURL:
+        type: "string"
+        example: "https://katalogbuku.blob.core.windows.net/image-uploads-container/the-giving-tree.jpg"
+      review:
+        type: "array"
+        xml:
+          name: "review"
+          wrapped: true
+        items:
+          $ref: '#/definitions/Review'
+      createdAt:
+        type: "string"
+        format: "date-time"
+      updatedAt:
+        type: "string"
+        format: "date-time"
+    xml:
+      name: "books"
+  
+  BookInput:
+    type: "object"
+    required:
+    - "title"
+    - "author"
+    - "releaseYear"
+    - "synopsis"
+    - "coverURL"
+    properties:
+      title:
+        type: "string"
+        example: "The Book Thief 2"
+      author:
+        type: "string"
+        example: "Elon Musk"
+      releaseYear:
+        type: "integer"
+        format: "int64"
+        example: 2021
+      synopsis:
+        type: "string"
+        example: "So begins a story of unforgettable perception, beautifully written and illustrated by the gifted and versatile Shel Silverstein."
+      coverURL:
+        type: "string"
+        example: "https://katalogbuku.blob.core.windows.net/image-uploads-container/the-giving-tree.jpg"
+    xml:
+      name: "books"
+  
+  GetBooksSuccessResponse:
+    type: "object"
+    properties:
+      success:
+        type: "boolean"
+        example: true
+      books:
+        type: "array"
+        items:
+          $ref: '#/definitions/Book'
+  
+  GetPostPutBookSuccessResponse:
+    type: "object"
+    properties:
+      success:
+        type: "boolean"
+        example: true
+      books:
+        $ref: '#/definitions/Book'
+
+  DeleteBookSuccessResponse:
+    type: "object"
+    properties:
+      success:
+        type: "boolean"
+        example: true
+      msg:
+        type: "string"
+        example: "Book with id 3 deleted"
+  
+  Review:
+    type: "object"
+    required:
+    - "bookId"
+    - "reviewerName"
+    - "rating"
+    - "comment"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+      bookId:
+        type: "integer"
+        format: "int64"
+        description: "Relation FK_book: fields: [bookId], references: [id]"
+      book:
+        $ref: "#/definitions/Book"
+      reviewerName:
+        type: "string"
+        example: "Rifandani"
+      rating:
+        type: "integer"
+        format: "int64"
+        minimum: 1
+        maximum: 5
+        example: 2
+      comment:
+        type: "string"
+        example: "This is a really great book"
+      createdAt:
+        type: "string"
+        format: "date-time"
+      updatedAt:
+        type: "string"
+        format: "date-time"
+    xml:
+      name: "reviews"
+  
+  ReviewInput:
+    type: "object"
+    required:
+    - "bookId"
+    - "reviewerName"
+    - "rating"
+    - "comment"
+    properties:
+      bookId:
+        type: "integer"
+        format: "int64"
+        example: 2
+      reviewerName:
+        type: "string"
+        example: "Rifandani"
+      rating:
+        type: "integer"
+        format: "int64"
+        minimum: 1
+        maximum: 5
+        example: 4
+      comment:
+        type: "string"
+        example: "This is one of the best book that i have ever read."
+    xml:
+      name: "reviews"
+      
+  GetReviewsSuccessResponse:
+    type: "object"
+    properties:
+      success:
+        type: "boolean"
+        example: true
+      books:
+        type: "array"
+        items:
+          $ref: '#/definitions/Review'
+  
+  GetPostPutReviewSuccessResponse:
+    type: "object"
+    properties:
+      success:
+        type: "boolean"
+        example: true
+      books:
+        $ref: '#/definitions/Review'
+
+  DeleteReviewSuccessResponse:
+    type: "object"
+    properties:
+      success:
+        type: "boolean"
+        example: true
+      msg:
+        type: "string"
+        example: "Review with id 3 deleted"
+        
+  UploadInput:
+    type: "object"
+    required:
+    - "image_uploads"
+    properties:
+      image_uploads:
+        type: "object"
+        description: "A File API format"
+    xml:
+      name: "upload"
+      
+  PostPutUploadSuccessResponse:
+    type: "object"
+    properties:
+      success:
+        type: "boolean"
+        example: true
+      coverURL:
+        type: "string"
+        example: "https://${account}.blob.core.windows.net/${containerName}/${file.originalname}"
+  
+  SearchInput:
+    type: "object"
+    required:
+    - "text"
+    properties:
+      text:
+        type: "string"
+        example: "tree"
+        description: "A text that you want to search. Could also use something like *, $take=10, $skip=2"
+    xml:
+      name: "search"
+  
+  PostSearchSuccessResponse:
+    type: "object"
+    properties:
+      success:
+        type: "boolean"
+        example: true
+      searchResults:
+        type: "array"
+        description: "An array of search results"
+        items:
+          $ref: '#/definitions/Book'
+  
+  RedisInput:
+    type: "object"
+    required:
+    - "title"
+    - "author"
+    - "releaseYear"
+    properties:
+      title:
+        type: "string"
+        example: "The Book Thief 2"
+      author:
+        type: "string"
+        example: "Elon Musk"
+      releaseYear:
+        type: "integer"
+        format: "int64"
+        example: 2021
+    xml:
+      name: "redis"
+  
+  GetRedisSuccessResponse:
+    type: "object"
+    properties:
+      success:
+        type: "boolean"
+        example: true
+      ping:
+        type: "string"
+        description: "Response from redis server"
+        example: "PONG"
+      version:
+        type: "string"
+        description: "Response redis version from redis server"
+        example: "6.0.0"
+      book:
+        type: "string"
+        description: "Response book object that has been stringified"
+        example: "{\"title\":\"My book\",\"author\":\"Rifandani\"}"
+        
+  PostRedisSuccessResponse:
+    type: "object"
+    properties:
+      success:
+        type: "boolean"
+        example: true
+      bookOK:
+        type: "string"
+        description: "Response from redis server"
+        example: "OK"
+  
+  ErrorResponse:
+    type: "object"
+    properties:
+      success:
+        type: "boolean"
+        example: false
+      msg:
+        type: "string"
+        example: "Prisma Error"
+      err:
+        type: "object"
+        description: "Prisma Error object"
