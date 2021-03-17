@@ -72,6 +72,16 @@ const Header: React.FC = () => {
               </a>
             </Link>
 
+            <Link href="/redis">
+              <a
+                className={`${
+                  pathname === '/redis' ? 'text-red-600' : 'text-gray-600'
+                } mt-3 hover:underline sm:mx-3 sm:mt-0`}
+              >
+                Redis
+              </a>
+            </Link>
+
             <Link href="/about">
               <a
                 className={`${

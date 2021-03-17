@@ -16,7 +16,9 @@ Submission 2 dengan kriteria fitur:
 - Menerapkan caching,
 - Menyediakan API Gateways bagi pengguna atau developer lain yang ingin mengakses API.
 
-> Submission 1 diharuskan menggunakan layanan komputasi dan penyimapanan dari Microsoft Azure, seperti Azure SQL Databases, Azure App Service, Azure Blob Storage. Sedangkan pada Submission 2 diharuskan menggunakan Azure Cognitive Search, Azure Cache for Redis, dan Azure API Management.
+_NOTE: Untuk Semua Pricing tier di Azure CDN tidak dapat menggunakan Azure Student Account_
+
+> Submission 1 diharuskan menggunakan layanan komputasi dan penyimapanan dari Microsoft Azure, seperti Azure SQL Databases, Azure App Service, Azure Blob Storage. Sedangkan pada Submission 2 diharuskan menggunakan Azure Cognitive Search, dan Azure API Management.
 
 ## 👨🏻‍💻 Tech Stack
 

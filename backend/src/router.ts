@@ -21,6 +21,7 @@ import {
 } from './controllers/ReviewController';
 import { postBookCover, putBookCover } from './controllers/BookCoverController';
 import { postSearch } from './controllers/SearchController';
+import { getRedis, postRedis } from './controllers/RedisController';
 
 // express router + multer
 const router = express.Router();
@@ -60,5 +61,8 @@ router.post('/upload', upload.single('image_uploads'), postBookCover);
 router.put('/upload', upload.single('image_uploads'), putBookCover);
 // SEARCH routes
 router.post('/search', postSearch);
+// REDIS routes
+router.get('/redis', getRedis);
+router.post('/redis', postRedis);
 
 export default router;

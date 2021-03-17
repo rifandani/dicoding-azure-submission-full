@@ -9,7 +9,7 @@ import BookCard from '../../components/Home/BookCard'
 
 type TOnKeyDownKey = string
 
-const SearchComp: React.FC = () => {
+const SearchPage: React.FC = () => {
   const [search, setSearch] = useState<string>('')
   const [data, setData] = useState<any>(null) // array of book
 
@@ -72,13 +72,6 @@ const SearchComp: React.FC = () => {
               </span>
             </div>
 
-            {/* <button
-              onClick={() => push('/create/book')}
-              className="px-3 my-2 text-white bg-green-600 border rounded-md hover:bg-green-500"
-            >
-              + New Book
-            </button> */}
-
             {/* search */}
             <div className="relative w-72">
               <span className="absolute left-0 flex items-center pl-3 bottom-6">
@@ -112,4 +105,4 @@ const SearchComp: React.FC = () => {
   )
 }
 
-export default SearchComp
+export default SearchPage
