@@ -23,7 +23,7 @@ _NOTE: Untuk Semua Pricing tier di Azure CDN tidak dapat menggunakan Azure Stude
 ## 👨🏻‍💻 Tech Stack
 
 Frontend menggunakan Next.js, Typescript, SWR + Axios, dan TailwindCSS.
-Frontend static di deploy ke [Azure Static Web App](https://mango-ocean-0d4421c00.azurestaticapps.net/).
+Frontend static di deploy ke [Azure Static Web App](https://thankful-wave-086fca500.azurestaticapps.net/).
 Backend menggunakan Express.js, Typescript, dan Prisma.
 Backend di deploy ke Azure App Service.
 Azure API Management [Developer Portal](https://katalog-buku-api.developer.azure-api.net/)
