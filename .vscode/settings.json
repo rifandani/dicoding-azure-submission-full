@@ -3,6 +3,6 @@
     "node_modules{,/**}",
     ".vscode{,/**}"
   ],
-  "appService.defaultWebAppToDeploy": "/subscriptions/342ca287-30ca-4c4c-8569-24159df9988a/resourceGroups/appsvc_linux_centralus/providers/Microsoft.Web/sites/katalog-buku-backend",
-  "appService.deploySubpath": "backend\\build\\src"
+  "appService.deploySubpath": "backend\\build\\src",
+  "appService.defaultWebAppToDeploy": "/subscriptions/342ca287-30ca-4c4c-8569-24159df9988a/resourceGroups/appsvc_linux_centralus/providers/Microsoft.Web/sites/katalog-buku-backend2"
 }
