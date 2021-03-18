@@ -1,8 +1,16 @@
 export interface ContentSectionProps {
   version: 1 | 2
+  level: number
+  name: string
+  imageURL: string
 }
 
-const ContentSection: React.FC<ContentSectionProps> = ({ version }) => {
+const ContentSection: React.FC<ContentSectionProps> = ({
+  version,
+  level,
+  name,
+  imageURL,
+}) => {
   if (version === 1)
     return (
       <main className="flex items-center p-8 mx-auto bg-white min-w-screen">
@@ -15,8 +23,8 @@ const ContentSection: React.FC<ContentSectionProps> = ({ version }) => {
               <div className="w-3 h-3 ml-2 bg-green-400 rounded-full"></div>
             </div>
             <img
-              src="https://images.unsplash.com/photo-1504985954001-5737b2af529e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2879&q=80"
-              alt=""
+              src={imageURL || ''}
+              alt={name}
               className="object-cover w-full h-full"
             />
           </div>
@@ -24,10 +32,10 @@ const ContentSection: React.FC<ContentSectionProps> = ({ version }) => {
         {/* // content */}
         <article className="relative w-1/2 h-full pl-12">
           <p className="text-sm font-bold tracking-wide text-red-500 uppercase">
-            Screenshot
+            Screenshot #{level}
           </p>
           <h2 className="mt-5 text-4xl font-bold leading-tight text-gray-900">
-            Awesome Features
+            {name} Features
             <br /> for Everyone to Enjoy.
           </h2>
           <p className="mt-3 text-base text-gray-600">
@@ -65,10 +73,10 @@ const ContentSection: React.FC<ContentSectionProps> = ({ version }) => {
       {/* // content */}
       <article className="w-1/2">
         <p className="text-sm font-bold tracking-wide text-red-500 uppercase">
-          Screenshot
+          Screenshot #{level}
         </p>
         <h2 className="mt-5 text-4xl font-bold leading-tight text-gray-900">
-          Awesome Features
+          {name} Features
           <br /> for Everyone to Enjoy.
         </h2>
         <p className="mt-3 text-base text-gray-600">
@@ -108,8 +116,8 @@ const ContentSection: React.FC<ContentSectionProps> = ({ version }) => {
             <div className="w-3 h-3 ml-2 bg-green-400 rounded-full"></div>
           </div>
           <img
-            src="https://images.unsplash.com/photo-1504985954001-5737b2af529e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2879&q=80"
-            alt=""
+            src={imageURL || ''}
+            alt={name}
             className="object-cover w-full h-full"
           />
         </div>

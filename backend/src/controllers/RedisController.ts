@@ -15,7 +15,7 @@ const hostname = process.env.REDIS_HOSTNAME || '';
 
 // Connect to the Azure Cache for Redis over the TLS port using the key.
 const client = redis.createClient(6380, hostname, {
-  auth_pass: accessKey,
+  password: accessKey,
   tls: { servername: hostname },
 });
 

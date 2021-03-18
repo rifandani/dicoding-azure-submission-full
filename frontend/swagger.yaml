@@ -23,7 +23,7 @@ tags:
 - name: "reviews"
   description: "Access to Review table from Azure SQL"
 - name: "upload"
-  description: "Operations to upload an image to Azure Blob"
+  description: "Operations to upload a single image to Azure Blob"
 - name: "search"
   description: "Operations to search from Azure Cognitive Search"
 - name: "redis"
@@ -130,10 +130,16 @@ paths:
       parameters:
       - name: "id"
         in: "path"
-        description: "ID of books to return"
+        description: "ID of book"
         required: true
         type: "integer"
         format: "int64"
+      - in: "body"
+        name: "BookInput"
+        description: "New book object that needs to be updated"
+        required: true
+        schema:
+          $ref: '#/definitions/BookInput'
       responses:
         "200":
           description: "Success returns JSON"
@@ -155,7 +161,7 @@ paths:
       parameters:
       - name: "id"
         in: "path"
-        description: "books id to delete"
+        description: "book ID to delete"
         required: true
         type: "integer"
         format: "int64"
@@ -201,7 +207,7 @@ paths:
       parameters:
       - in: "body"
         name: "ReviewInput"
-        description: "review object that needs to be added"
+        description: "New review to the book"
         required: true
         schema:
           $ref: '#/definitions/ReviewInput'
@@ -227,7 +233,7 @@ paths:
       parameters:
       - name: "id"
         in: "path"
-        description: "ID of review to return"
+        description: "Review ID"
         required: true
         type: "integer"
         format: "int64"
@@ -252,10 +258,16 @@ paths:
       parameters:
       - name: "id"
         in: "path"
-        description: "ID of review to return"
+        description: "Review ID"
         required: true
         type: "integer"
         format: "int64"
+      - in: "body"
+        name: "ReviewInputPut"
+        description: "Update existing review from the book"
+        required: true
+        schema:
+          $ref: '#/definitions/ReviewInputPut'
       responses:
         "200":
           description: "Success returns JSON"
@@ -277,7 +289,7 @@ paths:
       parameters:
       - name: "id"
         in: "path"
-        description: "review id to delete"
+        description: "Review ID to delete"
         required: true
         type: "integer"
         format: "int64"
@@ -296,7 +308,7 @@ paths:
       tags:
       - "upload"
       summary: "Add new image"
-      description: "Request headers using multipart/form-data dengan key image_uploads"
+      description: "Request headers using **multipart/form-data** dengan key **image_uploads**"
       operationId: "postBookCover"
       consumes:
       - "multipart/form-data"
@@ -306,7 +318,7 @@ paths:
       - in: "formData"
         type: "file"
         name: "UploadInput"
-        description: "form-data object with key image_uploads"
+        description: "**multipart/form-data** dengan key **image_uploads**"
         required: true
       responses:
         "201":
@@ -321,8 +333,8 @@ paths:
     put:
       tags:
       - "upload"
-      summary: "Update image by query fileName"
-      description: "Delete previous image based on query fileName and Post a new one."
+      summary: "Update existing image by query fileName"
+      description: "Delete previous image based on query **fileName** and POST a new one."
       operationId: "putBookCover"
       consumes:
       - "multipart/form-data"
@@ -363,7 +375,7 @@ paths:
       parameters:
       - in: "body"
         name: "SearchInput"
-        description: "text string that you want to search"
+        description: "text string that you want to search. Also supports $take=1, $skip=2, *"
         required: true
         schema:
           $ref: '#/definitions/SearchInput'
@@ -400,7 +412,7 @@ paths:
       tags:
       - "redis"
       summary: "Add a key value to redis cache"
-      description: "Post a key book to the redis cache"
+      description: "Post a key **book** to the redis cache"
       operationId: "postRedis"
       consumes:
       - "application/json"
@@ -409,7 +421,7 @@ paths:
       parameters:
       - in: "body"
         name: "RedisInput"
-        description: "book object that you want to store"
+        description: "book object that you want to store to cache"
         required: true
         schema:
           $ref: '#/definitions/RedisInput'
@@ -590,6 +602,28 @@ definitions:
       comment:
         type: "string"
         example: "This is one of the best book that i have ever read."
+    xml:
+      name: "reviews"
+      
+  ReviewInputPut:
+    type: "object"
+    required:
+    - "reviewerName"
+    - "rating"
+    - "comment"
+    properties:
+      reviewerName:
+        type: "string"
+        example: "Rifandani"
+      rating:
+        type: "integer"
+        format: "int64"
+        minimum: 1
+        maximum: 5
+        example: 4
+      comment:
+        type: "string"
+        example: "This is one of the worst book that i have ever read."
     xml:
       name: "reviews"
       

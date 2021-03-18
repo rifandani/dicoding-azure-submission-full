@@ -12,8 +12,18 @@ const AboutComp: React.FC = () => {
       <Header />
 
       {/* main content */}
-      <ContentSection version={1} />
-      <ContentSection version={2} />
+      <ContentSection
+        version={1}
+        level={1}
+        name="Home"
+        imageURL="https://raw.githubusercontent.com/rifandani/dicoding-azure-submission/master/ri-library.png"
+      />
+      <ContentSection
+        version={2}
+        level={2}
+        name="Review"
+        imageURL="https://raw.githubusercontent.com/rifandani/dicoding-azure-submission/master/book-detail.png"
+      />
 
       {/* footer */}
       <Footer />

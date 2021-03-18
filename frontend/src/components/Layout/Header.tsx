@@ -72,7 +72,7 @@ const Header: React.FC = () => {
               </a>
             </Link>
 
-            <Link href="/swagger">
+            <Link href="/redis">
               <a
                 className={`${
                   pathname === '/redis' ? 'text-red-600' : 'text-gray-600'

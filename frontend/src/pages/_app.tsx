@@ -16,16 +16,16 @@ import '../styles/index.css'
 axios.defaults.baseURL =
   process.env.NODE_ENV === 'development'
     ? 'http://localhost:8000/api'
-    : 'https://katalogbuku.vercel.app/api'
+    : 'https://katalog-buku-backend2.azurewebsites.net/api'
 
 const MyApp = ({ Component, pageProps }: AppProps): JSX.Element => {
   return (
     <>
       <Head>
-        <title>Dicoding Azure - Submission 1</title>
+        <title>Dicoding Azure - Submission</title>
         <meta
           property="og:title"
-          content="Dicoding Azure - Submission 1"
+          content="Dicoding Azure - Submission"
           key="title"
         />
         <link rel="icon" href="favicon.ico" />
@@ -35,7 +35,7 @@ const MyApp = ({ Component, pageProps }: AppProps): JSX.Element => {
           name="viewport"
           content="minimum-scale=1, initial-scale=1, width=device-width"
         />
-        <meta name="twitter:title" content="Dicoding Azure - Submission 1" />
+        <meta name="twitter:title" content="Dicoding Azure - Submission" />
         <meta name="twitter:card" content="summary" />
         <meta name="description" content="Deskripsi website." />
         <meta name="twitter:image" content="favicon.ico" />
